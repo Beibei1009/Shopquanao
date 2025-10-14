@@ -2,7 +2,7 @@
 
 Học kỳ 1, Năm học 2025-2026
 
-**Tên dự án**:Website shop quần áo thời trang
+**Tên dự án**: Website shop quần áo thời trang
 
 **MSSV 1**:
 
