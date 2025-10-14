@@ -6,7 +6,7 @@ Học kỳ 1, Năm học 2025-2026
 
 **MSSV 1**:
 
-**Họ tên SV 1**:
+**Họ tên SV 1**:Trần Thị Như Ý
 
 **MSSV 2**: PL24V7X504
 
