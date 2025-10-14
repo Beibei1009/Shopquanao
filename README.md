@@ -4,7 +4,7 @@ Học kỳ 1, Năm học 2025-2026
 
 **Tên dự án**: Website shop quần áo thời trang
 
-**MSSV 1**:
+**MSSV 1**: DC24V7X422
 
 **Họ tên SV 1**:Trần Thị Như Ý
 
