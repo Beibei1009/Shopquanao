@@ -1,0 +1,1 @@
+<?php $view = __DIR__.'/admin_form_content.php'; file_put_contents($view, '<h2>Product Form</h2>'); include __DIR__.'/layout.php'; ?>
