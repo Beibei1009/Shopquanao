@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Project học phần Công nghệ Web (CT275)
 
 Học kỳ 1, Năm học 2025-2026
