@@ -44,7 +44,6 @@
       <a href="/home">Trang chủ</a>
       <a href="/products">Sản phẩm</a>
       <a href="/about">Giới thiệu</a>
-      <a href="/contact">Liên hệ</a>
       <a href="/auth/login">Đăng nhập</a>
     </nav>
   </header>

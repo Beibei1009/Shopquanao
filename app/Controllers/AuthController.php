@@ -1,21 +1,18 @@
 <?php
-class AuthController {
+class AuthController
+{
     private $pdo;
 
-    public function __construct() {
-        try {
-            $this->pdo = new PDO(
-                "pgsql:host=localhost;dbname=ct275_project",
-                "postgres",
-                "thao123",
-                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-            );
-        } catch (PDOException $e) {
-            die('Kết nối database thất bại: ' . $e->getMessage());
-        }
+    public function __construct()
+    {
+        require_once __DIR__ . '/../../config/database.php';
+        $this->pdo = Database::getInstance();
     }
 
-    public function login(): void {
+
+
+    public function login(): void
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['password'])) {
             $email = $_POST['email'];
             $password = $_POST['password'];
@@ -29,7 +26,10 @@ class AuthController {
                 $_SESSION['user'] = [
                     'id' => $user['id'],
                     'name' => $user['name'],
-                    'email' => $user['email']
+                    'email' => $user['email'],
+                    'role' => $user['role'] ?? 'user',
+                    'phone' => $user['phone'] ?? null,
+                    'address' => $user['address'] ?? null
                 ];
                 header('Location: /');
                 exit;
@@ -40,7 +40,8 @@ class AuthController {
         include __DIR__ . '/../views/auth/login.php';
     }
 
-    public function register(): void {
+    public function register(): void
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['password'])) {
             $firstname = $_POST['firstname'];
             $lastname = $_POST['lastname'];
@@ -52,23 +53,32 @@ class AuthController {
             $check = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
             $check->execute([$email]);
 
-            if ($check->fetch()) {
-                echo "<p style='color:red;'>Email đã được sử dụng, vui lòng chọn email khác</p>";
+             if ($check->fetch()) {
+                $_SESSION['flash_error'] = 'Email đã được sử dụng, vui lòng chọn email khác';
             } else {
                 $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
                 $stmt->execute([$name, $email, $password]);
-                echo "<p style='color:green;'>Đăng ký thành công! <a href='/auth/login'>Đăng nhập ngay</a></p>";
+
+                $_SESSION['flash_success'] = 'Đăng ký thành công! Đang chuyển đến trang đăng nhập...';
+                echo '<script>
+                    setTimeout(function() {
+                        window.location.href = "/auth/login";
+                    }, 2000);
+                </script>';
+                include __DIR__ . '/../views/auth/register.php';
+                return;
             }
         }
 
         include __DIR__ . '/../views/auth/register.php';
     }
 
-    public function logout(): void {
+    public function logout(): void
+    {
         session_start();
+        //Hủy bỏ toàn bộ session, xóa tất cả dữ liệu session hiện tại
         session_destroy();
         header('Location: /');
         exit;
     }
 }
-?>

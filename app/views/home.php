@@ -1,5 +1,5 @@
 <?php 
-$banner = 'SHOP QUẦN ÁO THỜI TRANG';
+$banner = 'LILY & CO.';
 ob_start();
 ?>
 
@@ -38,14 +38,24 @@ body {
   display: block;
   transform: scale(1.25);   /* vẫn giữ phóng ảnh để đầy khung */
 }
-/* Hiệu ứng chuyển ảnh */
-@keyframes slide {
-  0% { transform: translateX(0%); }
-  33% { transform: translateX(-100%); }
-  66% { transform: translateX(-200%); }
-  100% { transform: translateX(0%); }
-}
+  /* Hiệu ứng chuyển ảnh */
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
 
+    33% {
+      transform: translateX(-33.33%);
+    }
+
+    66% {
+      transform: translateX(-66.66%);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
 /* Chữ nổi trên banner */
 .banner-text {
   position: absolute;
@@ -105,9 +115,9 @@ h2 {
   border: 1px solid #eee;
   border-radius: 10px;
   text-align: center;
-  padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
 }
 
 .card:hover {
@@ -117,12 +127,30 @@ h2 {
 }
 
 /* --- Ảnh sản phẩm --- */
-.card img {
+.card .product-img-wrapper {
+  position: relative;
   width: 100%;
   height: 230px;
+  margin-bottom: 10px;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 10px;
+}
+
+.card .out-of-stock-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #6c757d;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 /* --- Tên sản phẩm --- */
@@ -160,28 +188,115 @@ h2 {
 <!-- Banner -->
 <div class="banner">
   <div class="slides">
+<a href="/products">
 <img src="/images/banner-fashion-1.jpg" alt="Banner 1" />
+</a>
+<a href="/products">
 <img src="/images/banner-fashion-2.jpg" alt="Banner 2" />
+</a>
+<a href="/products">
 <img src="/images/banner-fashion-3.jpg" alt="Banner 3" />
+</a>
   </div>
   <div class="banner-text">
     <strong>SALE 30%</strong> - Mẫu mới mỗi tuần
   </div>
 </div>
-<h2>Sản phẩm mới</h2>
-
-<div class="product-list">
-  <?php foreach ($latest as $p): ?>
-    <div class="card">
-        <img src="/uploads/<?= htmlspecialchars($p['image']) ?>" 
-             alt="<?= htmlspecialchars($p['name']) ?>">
-        <div class="name"><?= htmlspecialchars($p['name']) ?></div>
-        <div class="price"><?= htmlspecialchars(number_format($p['price'], 0, ',', '.')) ?>đ</div>
-        <a href="/products?action=detail&id=<?= htmlspecialchars($p['id']) ?>" 
-           class="btn-buy">Xem chi tiết</a>
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-danger mb-0">
+            <i class="bi bi-stars"></i> Sản phẩm mới
+        </h2>
+        <a href="/products" class="btn btn-outline-danger">
+            Xem tất cả <i class="bi bi-arrow-right"></i>
+        </a>
     </div>
-  <?php endforeach; ?>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <?php
+        $count = 0;
+        foreach ($latest as $p):
+            if ($count >= 8) break;
+            $count++;
+        ?>
+            <div class="col">
+                <div class="card h-100 shadow-sm product-card">
+                    <a href="/products?action=detail&id=<?= $p['id'] ?>" class="text-decoration-none">
+                        <div class="card-img-wrapper position-relative">
+                            <img src="/uploads/<?= e($p['image']) ?>"
+                                 class="card-img-top"
+                                 alt="<?= e($p['name']) ?>"
+                                 onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                        </div>
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-dark mb-2"><?= e($p['name']) ?></h6>
+                            <p class="card-text fw-bold text-danger mb-2">
+                                <?= format_vnd($p['price']) ?>
+                            </p>
+                        </div>
+                    </a>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <a href="/products?action=detail&id=<?= $p['id'] ?>" class="btn btn-danger btn-sm w-100">
+                            <i class="bi bi-cart-plus"></i> Thêm vào giỏ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>
+
+<style>
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-img-wrapper {
+    overflow: hidden;
+    height: 400px;
+    background: #f8f9fa;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-text {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 576px) {
+    .card-img-wrapper {
+        height: 200px;
+    }
+    .card-title {
+        font-size: 0.85rem;
+        min-height: 35px;
+    }
+}
+</style>
 
 <?php
 $content = ob_get_clean();

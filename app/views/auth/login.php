@@ -1,90 +1,90 @@
-<?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <title>Đăng nhập tài khoản</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .brand-bar{background:#e53935;color:#fff}
-    .brand-bar a{color:#fff;text-decoration:none}
-    .login-card{max-width:520px;margin:40px auto;padding:32px;border:1px solid #ddd;border-radius:8px;background:#fff}
-    .btn-primary{background:#e53935;border-color:#e53935}
-    .btn-primary:hover{background:#c62828;border-color:#c62828}
-  </style>
-</head>
-<body>
+<?php ob_start(); ?>
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg bg-light border-bottom">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="/">SHOP QUẦN ÁO THỜI TRANG</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="nav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="/">Mới Mở</a></li>
-          <li class="nav-item"><a class="nav-link" href="/products">Sản phẩm</a></li>
-          <li class="nav-item"><a class="nav-link" href="/about">Giới thiệu</a></li>
-          <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
-        </ul>
-        <ul class="navbar-nav">
-          <?php if (!empty($_SESSION['user'])): ?>
-            <li class="nav-item">
-              <a class="nav-link" href="/auth/logout">Đăng xuất (<?= htmlspecialchars($_SESSION['user']['name']) ?>)</a>
-            </li>
-          <?php else: ?>
-            <li class="nav-item"><a class="nav-link active" href="/auth/login">Đăng nhập</a></li>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-danger text-white text-center py-4">
+          <h3 class="mb-0">
+            <i class="bi bi-box-arrow-in-right"></i> ĐĂNG NHẬP
+          </h3>
+        </div>
+
+        <div class="card-body p-4">
+          <?php if (isset($error)): ?>
+            <div class="alert alert-danger alert-dismissible fade show">
+              <i class="bi bi-exclamation-triangle-fill"></i> <?= e($error) ?>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
           <?php endif; ?>
-        </ul>
+
+          <p class="text-center text-muted mb-4">
+            Chưa có tài khoản? <a href="/auth/register" class="text-danger fw-bold text-decoration-none">Đăng ký ngay</a>
+          </p>
+
+          <form method="POST" action="/auth/login">
+            <div class="mb-3">
+              <label class="form-label fw-bold" for="email">
+                <i class="bi bi-envelope"></i> Email
+              </label>
+              <input id="email" name="email" type="email"
+                class="form-control form-control-lg"
+                placeholder="example@email.com"
+                value="<?= e($_POST['email'] ?? '') ?>"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold" for="password">
+                <i class="bi bi-lock"></i> Mật khẩu
+              </label>
+              <input id="password" name="password" type="password"
+                class="form-control form-control-lg"
+                placeholder="Nhập mật khẩu"
+                required>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="remember">
+                <label class="form-check-label small" for="remember">
+                  Ghi nhớ đăng nhập
+                </label>
+              </div>
+              <a href="#" class="small text-muted text-decoration-none">Quên mật khẩu?</a>
+            </div>
+
+            <div class="d-grid">
+              <button class="btn btn-danger btn-lg" type="submit">
+                <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+              </button>
+            </div>
+          </form>
+
+          <hr class="my-4">
+
+          <div class="text-center">
+            <p class="text-muted small mb-3">Hoặc đăng nhập bằng</p>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-danger"
+                onclick="alert('Tính năng đăng nhập Google sẽ được cập nhật sau!')">
+                <i class="bi bi-google"></i> Google
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer bg-light text-center py-3">
+          <small class="text-muted">
+            <i class="bi bi-shield-check"></i> Thông tin của bạn được bảo mật
+          </small>
+        </div>
       </div>
     </div>
-  </nav>
-
-  <!-- DẢI ĐỎ NHẸ -->
-  <div class="brand-bar py-2">
-    <div class="container text-center"><strong>ĐĂNG NHẬP TÀI KHOẢN</strong></div>
   </div>
-
-  <div class="login-card container">
-    <p class="text-center mb-3">
-      Bạn chưa có tài khoản? <a href="/auth/register" class="link-danger fw-semibold">Đăng ký tại đây</a>
-    </p>
-
-    <form method="POST" action="/auth/login">
-      <div class="mb-3">
-        <label class="form-label" for="email">Email *</label>
-        <input id="email" name="email" type="email" class="form-control" required>
-      </div>
-      <div class="mb-2">
-        <label class="form-label" for="password">Mật khẩu *</label>
-        <input id="password" name="password" type="password" class="form-control" required>
-      </div>
-      <div class="text-end mb-3">
-        <a class="small text-muted text-decoration-none" href="#">Quên mật khẩu?</a>
-      </div>
-      <button class="btn btn-primary w-100" type="submit">Đăng nhập</button>
-    </form>
-
-    <div class="text-center text-secondary mt-3">Hoặc đăng nhập bằng</div>
-<div class="text-center text-secondary mt-3">Hoặc đăng nhập bằng</div>
-<div class="d-flex gap-2 mt-2 justify-content-center">
-
-    <a href="#"
-       onclick="alert('🔒 Tính năng đăng nhập Google sẽ được cập nhật sau!');"
-       class="btn btn-danger w-50">
-        <i class="bi bi-google"></i> Đăng nhập Google
-    </a>
-
-    <a href="#"
-       onclick="alert('🔒 Tính năng đăng nhập Facebook sẽ được cập nhật sau!');"
-       class="btn btn-primary w-50">
-        <i class="bi bi-facebook"></i> Đăng nhập Facebook
-    </a>
-
 </div>
 
-<!-- Thêm dòng này để hiển thị icon -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../layout.php';
+?>

@@ -3,7 +3,7 @@
 
 Học kỳ 1, Năm học 2025-2026
 
-**Tên dự án**: Website shop quần áo thời trang
+**Tên dự án**: Website shop quần áo thời trang - LILY & CO.
 
 **MSSV 1**: DC24V7X422
 
@@ -16,3 +16,4 @@ Học kỳ 1, Năm học 2025-2026
 **Lớp học phần**: CT275
 
 
+- 1 admin account: `admin@shop.com` / `admin123`

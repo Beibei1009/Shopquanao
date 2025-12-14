@@ -1,13 +1,13 @@
 <?php
+require_once __DIR__ . '/../app/helpers.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../app/Controllers/HomeController.php';
 require_once __DIR__ . '/../app/Controllers/ProductController.php';
-require_once __DIR__ . '/../app/Controllers/ContactController.php';
 require_once __DIR__ . '/../app/Controllers/AboutController.php';
 require_once __DIR__ . '/../app/Controllers/AdminController.php';
 require_once __DIR__ . '/../app/Controllers/AuthController.php';
 require_once __DIR__ . '/../app/Controllers/CartController.php';
-require_once __DIR__ . '/../app/Controllers/SearchController.php';
+require_once __DIR__ . '/../app/Controllers/OrderController.php';
 
 $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
@@ -43,11 +43,7 @@ switch ($path) {
         }
         break;
 
-    // 📞 Liên hệ
-    case 'contact':
-        (new ContactController())->index();
-        break;
-
+    
     // ℹ️ Giới thiệu
     case 'about':
         (new AboutController())->index();
@@ -65,18 +61,56 @@ switch ($path) {
     case 'cart/remove':
         (new CartController())->remove();
         break;
-        case 'cart/checkout':
-    (new CartController())->checkout();
-    break;
+
+    case 'cart/update':
+        (new CartController())->updateQuantity();
+        break;
+
+    case 'cart/checkout':
+        (new CartController())->checkout();
+        break;
+
+    case 'checkout-form':
+        include __DIR__ . '/../app/views/checkout_form.php';
+        break;
 
     // 👩‍💼 Admin quản lý sản phẩm
     case 'admin/products':
         (new ProductController())->adminlist();
         break;
 
-    // 🔍 Tìm kiếm sản phẩm
-    case 'search':
-        (new SearchController())->index();
+    case 'admin/products/create':
+        (new ProductController())->create();
+        break;
+
+    case 'admin/products/edit':
+        (new ProductController())->edit();
+        break;
+
+    case 'admin/products/delete':
+        (new ProductController())->delete();
+        break;
+
+    // 📦 Đơn hàng (user)
+    case 'orders':
+        (new OrderController())->index();
+        break;
+
+    case 'orders/detail':
+        (new OrderController())->detail();
+        break;
+
+    // 📦 Admin quản lý đơn hàng
+    case 'admin/orders':
+        (new AdminController())->orders();
+        break;
+
+    case 'admin/orders/detail':
+        (new AdminController())->orderDetail();
+        break;
+
+    case 'admin/orders/update-status':
+        (new AdminController())->updateOrderStatus();
         break;
 
     // 🚫 Mặc định 404
