@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . '/../../config/database.php';
+namespace App\Models;
 
 class Product {
     private $pdo;
 
     public function __construct() {
-        $this->pdo = Database::getInstance();
+        $this->pdo = \Database::getInstance();
     }
 
     public function all(): mixed {

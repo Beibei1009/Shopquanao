@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../config/database.php';
+namespace App\Models;
 
 class Category
 {
@@ -7,7 +7,7 @@ class Category
     //Constructor - Khởi tạo kết nối database
     public function __construct()
     {
-        $this->pdo = Database::getInstance();
+        $this->pdo = \Database::getInstance();
     }
     //Lấy tất cả danh mục
     public function all(): mixed

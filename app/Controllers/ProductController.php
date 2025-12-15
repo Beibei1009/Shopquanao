@@ -1,5 +1,8 @@
 <?php
-require_once __DIR__ . '/../Models/Product.php';
+namespace App\Controllers;
+
+use App\Models\Product;
+use App\Models\Category;
 
 class ProductController {
     // Hiển thị danh sách sản phẩm
@@ -25,7 +28,6 @@ class ProductController {
         }
 
         // Lấy danh sách categories cho filter
-        require_once __DIR__ . '/../Models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
@@ -64,8 +66,7 @@ class ProductController {
     public function adminlist(): void {
         require_admin(); // Check quyền admin
 
-        require_once __DIR__ . '/../../config/database.php';
-        $pdo = Database::getInstance();
+        $pdo = \Database::getInstance();
 
         // Get filter parameters
         $search = $_GET['search'] ?? '';
@@ -113,7 +114,6 @@ class ProductController {
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Get categories for filter
-        require_once __DIR__ . '/../Models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
@@ -129,7 +129,6 @@ class ProductController {
         require_admin();
 
         // Lấy danh sách categories
-        require_once __DIR__ . '/../Models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
@@ -166,8 +165,7 @@ class ProductController {
                 if (session_status() === PHP_SESSION_NONE)
                     session_start();
 
-                require_once __DIR__ . '/../../config/database.php';
-                $pdo = Database::getInstance();
+                $pdo = \Database::getInstance();
 
                 // Tạo slug từ name
                 $baseSlug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
@@ -242,7 +240,6 @@ class ProductController {
         }
 
         // Lấy danh sách categories
-        require_once __DIR__ . '/../Models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
@@ -276,8 +273,7 @@ class ProductController {
                 if (session_status() === PHP_SESSION_NONE)
                     session_start();
 
-                require_once __DIR__ . '/../../config/database.php';
-                $pdo = Database::getInstance();
+                $pdo = \Database::getInstance();
 
                 // Tạo slug từ name
                 $baseSlug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));

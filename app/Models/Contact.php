@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__.'/../../config/db.php';
+namespace App\Models;
+
 class Contact{
  private PDO $pdo;
  public function __construct(){ $this->pdo=getPDO(); }

@@ -1,4 +1,6 @@
 <?php
+namespace App\Controllers;
+
 class OrderController
 {
     // Danh sách đơn hàng của user
@@ -13,8 +15,7 @@ class OrderController
             exit;
         }
 
-        require_once __DIR__ . '/../../config/database.php';
-        $pdo = Database::getInstance();
+        $pdo = \Database::getInstance();
 
         $userId = $_SESSION['user']['id'];
         $stmt = $pdo->prepare(
@@ -46,8 +47,7 @@ class OrderController
             exit;
         }
 
-        require_once __DIR__ . '/../../config/database.php';
-        $pdo = Database::getInstance();
+        $pdo = \Database::getInstance();
 
         // Get order
         $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ?");

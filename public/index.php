@@ -1,13 +1,18 @@
 <?php
-require_once __DIR__ . '/../app/helpers.php';
+// Composer Autoloader - tự động load tất cả class theo PSR-4
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Database config - vẫn cần load vì Database class chưa có namespace
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../app/Controllers/HomeController.php';
-require_once __DIR__ . '/../app/Controllers/ProductController.php';
-require_once __DIR__ . '/../app/Controllers/AboutController.php';
-require_once __DIR__ . '/../app/Controllers/AdminController.php';
-require_once __DIR__ . '/../app/Controllers/AuthController.php';
-require_once __DIR__ . '/../app/Controllers/CartController.php';
-require_once __DIR__ . '/../app/Controllers/OrderController.php';
+
+// Sử dụng các class với namespace
+use App\Controllers\HomeController;
+use App\Controllers\ProductController;
+use App\Controllers\AboutController;
+use App\Controllers\AdminController;
+use App\Controllers\AuthController;
+use App\Controllers\CartController;
+use App\Controllers\OrderController;
 
 $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 

@@ -1,12 +1,13 @@
 <?php
+namespace App\Controllers;
+
 class AuthController
 {
     private $pdo;
 
     public function __construct()
     {
-        require_once __DIR__ . '/../../config/database.php';
-        $this->pdo = Database::getInstance();
+        $this->pdo = \Database::getInstance();
     }
 
 

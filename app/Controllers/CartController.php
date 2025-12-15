@@ -1,4 +1,6 @@
 <?php
+namespace App\Controllers;
+
 class CartController
 {
     // Hiển thị giỏ hàng
@@ -15,7 +17,6 @@ class CartController
         $invalidItems = [];
 
         if (!empty($sessionCart)) {
-            require __DIR__ . '/../../config/database.php';
             //Lặp qua tất cả các sản phẩm trong giỏ hàng ($sessionCart).
             //Mỗi sản phẩm có khóa ($cartKey) và giá trị ($item) là thông tin của sản phẩm.
             foreach ($sessionCart as $cartKey => $item) {
@@ -170,7 +171,7 @@ class CartController
                 // Kiểm tra dữ liệu hợp lệ : cart key tồn tại và số lượng > 0
                 if ($cartKey && isset($_SESSION['cart'][$cartKey]) && $quantity > 0) {
                     require_once __DIR__ . '/../../config/database.php';
-                    $pdo = Database::getInstance();
+                    $pdo = \Database::getInstance();
 
                     // Lấy item trong giỏ theo key.
                     $item = $_SESSION['cart'][$cartKey];
