@@ -38,6 +38,6 @@ temp/
 .env.local
 .env.production
 
-# Upload files (nên mount volume riêng)
-public/uploads/*
-!public/uploads/.gitkeep
+# Upload files - KHÔNG ignore để copy ảnh vào container
+# public/uploads/*
+# !public/uploads/.gitkeep

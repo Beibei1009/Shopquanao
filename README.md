@@ -16,7 +16,7 @@ Học kỳ 1, Năm học 2025-2026
 **Lớp học phần**: CT275
 
 
-- 1 admin account: `trany.hg2001@gmail.com` / `123456`
+- 1 admin account: `nva@gmail.com` / `123456`
 
 Thêm sản phẩm 
 Tên: "ERICA DRESS
@@ -26,3 +26,11 @@ Giá: "299000" ->Lưu
 
 Sửa sản phẩm 
 Đổi giá: "349000"
+
+update role tk admin
+UPDATE users SET role = 'admin' WHERE email = 'your-email@example.com';
+
+Cập nhật tên danh mục theo ID
+UPDATE categories SET name = 'Tên mới' WHERE id = 1;
+-- Cập nhật cả tên và slug
+UPDATE categories SET name = 'Tên mới', slug = 'ten-moi' WHERE id = 1;

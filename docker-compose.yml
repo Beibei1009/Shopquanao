@@ -9,10 +9,11 @@ services:
     container_name: jewelry_shop_web
     ports:
       - "8080:80"
-    # Comment volumes để dùng files từ Docker image
-    # Uncomment dòng dưới nếu muốn mount code để development
-    # volumes:
-    #   - .:/var/www/html
+    volumes:
+      # Persist uploads để không mất ảnh khi restart
+      - ./public/uploads:/var/www/html/public/uploads
+      # Persist session để không bị đăng xuất
+      - php_sessions:/var/lib/php/sessions
     environment:
       # Database connection sẽ dùng Neon PostgreSQL (cloud)
       - DB_HOST=ep-steep-bar-ade1yc2b-pooler.c-2.us-east-1.aws.neon.tech
@@ -28,3 +29,6 @@ services:
 networks:
   jewelry_network:
     driver: bridge
+
+volumes:
+  php_sessions:
