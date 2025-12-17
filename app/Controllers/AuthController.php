@@ -23,7 +23,6 @@ class AuthController
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
-                session_start();
                 $_SESSION['user'] = [
                     'id' => $user['id'],
                     'name' => $user['name'],
@@ -76,7 +75,6 @@ class AuthController
 
     public function logout(): void
     {
-        session_start();
         //Hủy bỏ toàn bộ session, xóa tất cả dữ liệu session hiện tại
         session_destroy();
         header('Location: /');
