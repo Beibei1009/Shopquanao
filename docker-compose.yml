@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # PHP Apache Web Server
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jewelry_shop_web
+    ports:
+      - "8080:80"
+    # Comment volumes để dùng files từ Docker image
+    # Uncomment dòng dưới nếu muốn mount code để development
+    # volumes:
+    #   - .:/var/www/html
+    environment:
+      # Database connection sẽ dùng Neon PostgreSQL (cloud)
+      - DB_HOST=ep-steep-bar-ade1yc2b-pooler.c-2.us-east-1.aws.neon.tech
+      - DB_PORT=5432
+      - DB_NAME=neondb
+      - DB_USER=neondb_owner
+      - DB_PASS=npg_pjz6VnLaMh4o
+      - DB_SSL=require
+    networks:
+      - jewelry_network
+    restart: unless-stopped
+
+networks:
+  jewelry_network:
+    driver: bridge

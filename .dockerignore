@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+*.md
+PRESENTATION*.md
+PROJECT_PLAN.md
+SETUP.md
+PHASE*.md
+
+# IDE
+.vscode
+.idea
+
+# Dependencies (sẽ được install lại trong container)
+vendor/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Environment files (chứa sensitive data)
+.env
+.env.local
+.env.production
+
+# Upload files (nên mount volume riêng)
+public/uploads/*
+!public/uploads/.gitkeep
