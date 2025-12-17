@@ -60,7 +60,7 @@
                                 <label for="size" class="form-label fw-bold">
                                     <i class="bi bi-rulers"></i> Chọn size:
                                 </label>
-                                <select name="size" id="size" class="form-select" required>
+                                <select name="size" id="size" class="form-select form-select-lg" required style="font-size: 16px;">
                                     <option value="">-- Chọn size --</option>
                                     <?php
                                     $sizes = ['S' => 'Size S', 'M' => 'Size M', 'L' => 'Size L', 'XL' => 'Size XL', 'XXL' => 'Size XXL'];
@@ -163,6 +163,23 @@
     .product-image-wrapper img {
         max-height: 350px;
     }
+
+    /* Fix dropdown size on mobile */
+    #size {
+        font-size: 16px !important;
+        padding: 12px 16px;
+        height: auto;
+    }
+
+    #size option {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+/* Ensure select doesn't zoom on iOS */
+select#size {
+    font-size: 16px;
 }
 </style>
 

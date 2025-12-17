@@ -66,10 +66,13 @@
           <div class="text-center">
             <p class="text-muted small mb-3">Hoặc đăng nhập bằng</p>
             <div class="d-grid gap-2">
-              <button class="btn btn-outline-danger"
-                onclick="alert('Tính năng đăng nhập Google sẽ được cập nhật sau!')">
+
+              <a class="btn btn-outline-danger"
+                href="/auth/google">
                 <i class="bi bi-google"></i> Google
-              </button>
+
+              </a>
+
             </div>
           </div>
         </div>

@@ -58,13 +58,60 @@ if (session_status() === PHP_SESSION_NONE) {
             color: #fff !important;
         }
 
+        /* Navbar container fixes */
+        .navbar-collapse {
+            flex-grow: 1;
+        }
+
+        .navbar-nav {
+            flex-wrap: nowrap;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 991px) {
+            .navbar-brand {
+                font-size: 24px;
+                margin-left: 0;
+            }
+
             .navbar-collapse {
                 background-color: #c62828;
-                padding: 15px;
+                padding: 10px;
                 border-radius: 8px;
                 margin-top: 10px;
+            }
+
+            .nav-link {
+                margin-left: 0;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .navbar-nav .dropdown-menu {
+                background-color: #b71c1c;
+                border: none;
+                margin-left: 12px;
+            }
+
+            .navbar-nav .dropdown-item {
+                color: #fff;
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+
+            .navbar-nav .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 20px;
+            }
+
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 6px 10px;
             }
         }
     </style>
@@ -115,60 +162,62 @@ if (session_status() === PHP_SESSION_NONE) {
                 </ul>
 
                 <!-- Khối bên phải navbar -->
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 gap-lg-3 mt-3 mt-lg-0" style="width: auto;">
                     <!-- Form tìm kiếm sản phẩm -->
-                    <form action="/products" method="get" class="d-flex" role="search">
+                    <form action="/products" method="get" class="d-flex" role="search" style="min-width: 200px;">
                         <div class="input-group input-group-sm">
-                            <input type="text" name="search" class="form-control" placeholder="Tìm sản phẩm...">
-                            <button class="btn btn-light" type="submit">
+                            <input type="text" name="search" class="form-control" placeholder="Tìm sản phẩm..." style="font-size: 0.85rem;">
+                            <button class="btn btn-light" type="submit" style="padding: 0.25rem 0.5rem;">
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
                     </form>
 
-                    <!-- Giỏ hàng -->
-                    <a href="/cart" class="btn btn-outline-light position-relative" title="Giỏ hàng">
-                        <i class="bi bi-cart3"></i>
-                        <?php
-                        //Tính tổng số lượng trong giỏ hàng
-                        $cartTotalQty = 0;
-                        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
-                            foreach ($_SESSION['cart'] as $item) {
-                                $cartTotalQty += is_array($item) ? ($item['quantity'] ?? 1) : 1;
+                    <div class="d-flex gap-2" style="white-space: nowrap;">
+                        <!-- Giỏ hàng -->
+                        <a href="/cart" class="btn btn-outline-light position-relative btn-sm" title="Giỏ hàng">
+                            <i class="bi bi-cart3"></i><span class="d-lg-none ms-1">Giỏ hàng</span>
+                            <?php
+                            //Tính tổng số lượng trong giỏ hàng
+                            $cartTotalQty = 0;
+                            if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+                                foreach ($_SESSION['cart'] as $item) {
+                                    $cartTotalQty += is_array($item) ? ($item['quantity'] ?? 1) : 1;
+                                }
                             }
-                        }
-                        //Hiện badge số lượng
-                        if ($cartTotalQty > 0):
-                        ?>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                                <?= $cartTotalQty ?>
-                            </span>
-                        <?php endif; ?>
-                    </a>
-
-                    <!-- User Menu -->
-                    <!-- Nếu user đã đăng nhập -->
-                    <?php if (isset($_SESSION['user'])): ?>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <!--  Hiển thị tên user đã đăng nhập với htmlspecialchars để tránh XSS -->
-                                <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['user']['name']) ?>
-                            </button>
-                            <!-- Menu con -->
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/orders"><i class="bi bi-box-seam"></i> Đơn hàng của tôi</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
-                            </ul>
-                        </div>
-                        <!-- Nếu user chưa đăng nhập: -->
-                    <?php else: ?>
-                        <a href="/auth/login" class="btn btn-outline-light">
-                            <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                            //Hiện badge số lượng
+                            if ($cartTotalQty > 0):
+                            ?>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size: 0.65rem;">
+                                    <?= $cartTotalQty ?>
+                                </span>
+                            <?php endif; ?>
                         </a>
-                    <?php endif; ?>
+
+                        <!-- User Menu -->
+                        <!-- Nếu user đã đăng nhập -->
+                        <?php if (isset($_SESSION['user'])): ?>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" style="font-size: 0.85rem;">
+                                    <!--  Hiển thị tên user đã đăng nhập với htmlspecialchars để tránh XSS -->
+                                    <i class="bi bi-person-circle"></i> <span class="d-none d-sm-inline"><?= htmlspecialchars($_SESSION['user']['name']) ?></span><span class="d-inline d-sm-none">Tài khoản</span>
+                                </button>
+                                <!-- Menu con -->
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item small" href="/orders"><i class="bi bi-box-seam"></i> Đơn hàng của tôi</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item small" href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                            <!-- Nếu user chưa đăng nhập: -->
+                        <?php else: ?>
+                            <a href="/auth/login" class="btn btn-outline-light btn-sm" style="font-size: 0.85rem;">
+                                <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                            </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>

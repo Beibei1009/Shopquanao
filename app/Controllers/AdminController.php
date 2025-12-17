@@ -28,7 +28,7 @@ class AdminController
                 ORDER BY o.created_at DESC";
         $stmt = $this->pdo->query($sql);
         //Lấy toàn bộ kết quả thành một mảng các dòng.
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $orders = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         include __DIR__ . '/../views/admin/order.php';
     }
@@ -52,7 +52,7 @@ class AdminController
              WHERE o.id = ?"
         );
         $stmt->execute([$orderId]);
-        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+        $order = $stmt->fetch(\PDO::FETCH_ASSOC);
         // Nếu không tìm thấy đơn hàng
         if (!$order) {
             die('Order not found');
@@ -66,7 +66,7 @@ class AdminController
              WHERE oi.order_id = ?"
         );
         $stmt->execute([$orderId]);
-        $orderItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $orderItems = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         include __DIR__ . '/../views/admin/order_detail.php';
     }
@@ -91,7 +91,7 @@ class AdminController
                     // Lấy thông tin đơn hàng hiện tại
                     $stmt = $this->pdo->prepare("SELECT status FROM orders WHERE id = ?");
                     $stmt->execute([$orderId]);
-                    $order = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $order = $stmt->fetch(\PDO::FETCH_ASSOC);
                     // Nếu đơn hàng không tồn tại
                     if (!$order) {
                         throw new Exception('Đơn hàng không tồn tại');
@@ -125,7 +125,7 @@ class AdminController
 
                     $this->pdo->commit();
                     $_SESSION['flash_success'] = 'Cập nhật trạng thái đơn hàng thành công';
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->pdo->rollBack();
                     $_SESSION['flash_error'] = 'Lỗi: ' . $e->getMessage();
                 }

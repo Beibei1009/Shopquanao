@@ -36,10 +36,10 @@
                                     <i class="bi bi-person"></i> Họ
                                 </label>
                                 <input id="firstname" name="firstname" type="text"
-                                       class="form-control"
-                                       placeholder="Nguyễn"
-                                       value="<?= e($_POST['firstname'] ?? '') ?>"
-                                       required>
+                                    class="form-control"
+                                    placeholder="Nguyễn"
+                                    value="<?= e($_POST['firstname'] ?? '') ?>"
+                                    required>
                             </div>
 
                             <div class="col-md-6">
@@ -47,10 +47,10 @@
                                     <i class="bi bi-person"></i> Tên
                                 </label>
                                 <input id="lastname" name="lastname" type="text"
-                                       class="form-control"
-                                       placeholder="Văn A"
-                                       value="<?= e($_POST['lastname'] ?? '') ?>"
-                                       required>
+                                    class="form-control"
+                                    placeholder="Văn A"
+                                    value="<?= e($_POST['lastname'] ?? '') ?>"
+                                    required>
                             </div>
 
                             <div class="col-12">
@@ -58,10 +58,10 @@
                                     <i class="bi bi-envelope"></i> Email
                                 </label>
                                 <input id="email" name="email" type="email"
-                                       class="form-control"
-                                       placeholder="example@email.com"
-                                       value="<?= e($_POST['email'] ?? '') ?>"
-                                       required>
+                                    class="form-control"
+                                    placeholder="example@email.com"
+                                    value="<?= e($_POST['email'] ?? '') ?>"
+                                    required>
                             </div>
 
                             <div class="col-12">
@@ -69,10 +69,10 @@
                                     <i class="bi bi-telephone"></i> Số điện thoại
                                 </label>
                                 <input id="phone" name="phone" type="text"
-                                       class="form-control"
-                                       placeholder="0123456789"
-                                       value="<?= e($_POST['phone'] ?? '') ?>"
-                                       required>
+                                    class="form-control"
+                                    placeholder="0123456789"
+                                    value="<?= e($_POST['phone'] ?? '') ?>"
+                                    required>
                             </div>
 
                             <div class="col-md-6">
@@ -80,9 +80,9 @@
                                     <i class="bi bi-lock"></i> Mật khẩu
                                 </label>
                                 <input id="password" name="password" type="password"
-                                       class="form-control"
-                                       placeholder="Tối thiểu 6 ký tự"
-                                       required>
+                                    class="form-control"
+                                    placeholder="Tối thiểu 6 ký tự"
+                                    required>
                             </div>
 
                             <div class="col-md-6">
@@ -90,9 +90,9 @@
                                     <i class="bi bi-lock-fill"></i> Xác nhận mật khẩu
                                 </label>
                                 <input id="confirm_password" name="confirm_password" type="password"
-                                       class="form-control"
-                                       placeholder="Nhập lại mật khẩu"
-                                       required>
+                                    class="form-control"
+                                    placeholder="Nhập lại mật khẩu"
+                                    required>
                             </div>
 
                             <div class="col-12">
@@ -118,10 +118,11 @@
                     <div class="text-center">
                         <p class="text-muted small mb-3">Hoặc đăng ký bằng</p>
                         <div class="d-grid gap-2">
-                            <button class="btn btn-outline-danger"
-                                    onclick="alert('Tính năng đăng ký Google sẽ được cập nhật sau!')">
+                            <a class="btn btn-outline-danger"
+                                href="/auth/google">
                                 <i class="bi bi-google"></i> Google
-                            </button>
+
+                            </a>
                         </div>
                     </div>
                 </div>

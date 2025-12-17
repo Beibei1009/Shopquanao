@@ -16,4 +16,13 @@ Học kỳ 1, Năm học 2025-2026
 **Lớp học phần**: CT275
 
 
-- 1 admin account: `admin@shop.com` / `admin123`
+- 1 admin account: `trany.hg2001@gmail.com` / `123456`
+
+Thêm sản phẩm 
+Tên: "ERICA DRESS
+"
+Danh mục: Chọn "Đầm Váy"
+Giá: "299000" ->Lưu
+
+Sửa sản phẩm 
+Đổi giá: "349000"

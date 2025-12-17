@@ -6,12 +6,12 @@ if (!class_exists('Database')) {
         //tạo 1 kết nối database duy nhất
         private static ?PDO $instance = null;
 
-        // Database config
-        private static string $host = '127.0.0.1';
-        private static int $port = 5433;
-        private static string $dbname = 'CT275_Project';
-        private static string $user = 'postgres';
-        private static string $password = '123456';
+        // Database config - Neon PostgreSQL
+        private static string $host = 'ep-steep-bar-ade1yc2b-pooler.c-2.us-east-1.aws.neon.tech';
+        private static int $port = 5432;
+        private static string $dbname = 'neondb';
+        private static string $user = 'neondb_owner';
+        private static string $password = 'npg_pjz6VnLaMh4o';
 
         private function __construct() {}
         private function __clone() {}
@@ -21,7 +21,7 @@ if (!class_exists('Database')) {
             if (self::$instance === null) {
                 try {
                     $dsn = sprintf(
-                        "pgsql:host=%s;port=%d;dbname=%s",
+                        "pgsql:host=%s;port=%d;dbname=%s;sslmode=require",
                         self::$host,
                         self::$port,
                         self::$dbname

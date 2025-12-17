@@ -3,9 +3,10 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255),  
     role VARCHAR(50) DEFAULT 'customer' CHECK (role IN ('customer', 'admin')),
     is_active BOOLEAN DEFAULT TRUE,
+    google_id VARCHAR(255) UNIQUE, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -132,4 +133,13 @@ CREATE TABLE contacts (
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Cấp quyền cho user neondb_owner
+GRANT ALL PRIVILEGES ON SCHEMA public TO neondb_owner;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO neondb_owner;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO neondb_owner;
+
+-- Cấp quyền tạo table
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO neondb_owner;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO neondb_owner;
 

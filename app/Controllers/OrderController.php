@@ -24,7 +24,7 @@ class OrderController
              ORDER BY created_at DESC"
         );
         $stmt->execute([$userId]);
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $orders = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         include __DIR__ . '/../views/orders/index.php';
     }
@@ -52,7 +52,7 @@ class OrderController
         // Get order
         $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ?");
         $stmt->execute([$orderId]);
-        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+        $order = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if (!$order) {
             $_SESSION['flash_error'] = 'Không tìm thấy đơn hàng';
@@ -72,7 +72,7 @@ class OrderController
             "SELECT * FROM order_items WHERE order_id = ?"
         );
         $stmt->execute([$orderId]);
-        $orderItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $orderItems = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         $order['items'] = $orderItems;
 

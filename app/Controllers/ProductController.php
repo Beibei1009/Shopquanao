@@ -111,7 +111,7 @@ class ProductController {
         $params[] = $offset;
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $products = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         // Get categories for filter
         $categoryModel = new Category();
@@ -119,7 +119,7 @@ class ProductController {
 
         // Get all products for statistics
         $allProductsStmt = $pdo->query("SELECT price FROM products WHERE is_active = TRUE");
-        $allProducts = $allProductsStmt->fetchAll(PDO::FETCH_ASSOC);
+        $allProducts = $allProductsStmt->fetchAll(\PDO::FETCH_ASSOC);
 
         include __DIR__ . '/../views/admin/admin_list.php';
     }
@@ -207,7 +207,7 @@ class ProductController {
                     exit;
 
                     //Xử lý lỗi
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     //rollBack() sẽ được gọi để hủy bỏ giao dịch nếu có lỗi xảy ra
                     if ($pdo->inTransaction()) {
                         $pdo->rollBack();
@@ -308,7 +308,7 @@ class ProductController {
                     $_SESSION['flash_success'] = 'Cập nhật sản phẩm thành công!';
                     header('Location: /admin/products');
                     exit;
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     if ($pdo->inTransaction()) {
                         $pdo->rollBack();
                     }
@@ -338,8 +338,7 @@ class ProductController {
             delete_image($product['image']);
 
             // Xóa bản ghi khỏi cơ sở dữ liệu
-            require_once __DIR__ . '/../../config/database.php';
-            $pdo = Database::getInstance();
+            $pdo = \Database::getInstance();
             $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
             $stmt->execute([$id]);
         }

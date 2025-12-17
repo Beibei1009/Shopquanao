@@ -1,10 +1,10 @@
 <?php ob_start(); ?>
 
 <div class="container my-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-danger"><i class="bi bi-cart-check"></i> Quản lý đơn hàng</h2>
-    <a href="/admin/products" class="btn btn-outline-danger">
-      <i class="bi bi-box"></i> Quản lý sản phẩm
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 mb-md-4 gap-2">
+    <h2 class="text-danger mb-0 fs-5 fs-md-4 fs-lg-3"><i class="bi bi-cart-check"></i> Quản lý đơn hàng</h2>
+    <a href="/admin/products" class="btn btn-outline-danger btn-sm">
+      <i class="bi bi-box"></i> <span class="d-none d-sm-inline">Quản lý sản phẩm</span><span class="d-inline d-sm-none">Sản phẩm</span>
     </a>
   </div>
 
@@ -33,32 +33,51 @@
     ];
     ?>
     <div class="card shadow">
-      <div class="card-body">
+      <div class="card-body p-0 p-md-3">
         <div class="table-responsive">
-          <table class="table table-hover align-middle">
+          <table class="table table-hover align-middle mb-0">
             <thead class="table-danger">
               <tr>
-                <th>Mã ĐH</th>
-                <th>Khách hàng</th>
-                <th>Email/SĐT</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-                <th>Ngày đặt</th>
-                <th>Thao tác</th>
+                <th class="ps-2 ps-md-3" style="min-width: 85px;"><small>Mã ĐH</small></th>
+                <th style="min-width: 120px;"><small>Khách hàng</small></th>
+                <th class="d-none d-lg-table-cell" style="min-width: 150px;"><small>Email/SĐT</small></th>
+                <th class="d-none d-sm-table-cell" style="min-width: 105px;"><small>Tổng tiền</small></th>
+                <th style="min-width: 105px;"><small>Trạng thái</small></th>
+                <th class="d-none d-md-table-cell" style="min-width: 130px;"><small>Ngày đặt</small></th>
+                <th class="pe-2 pe-md-3 text-center" style="min-width: 75px;"><small>Tác vụ</small></th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($orders as $order): ?>
               <tr>
-                <td class="fw-bold"><?= e($order['order_code'] ?? '#' . str_pad($order['id'], 6, '0', STR_PAD_LEFT)) ?></td>
+                <td class="fw-bold ps-2 ps-md-3 small"><?= e($order['order_code'] ?? '#' . str_pad($order['id'], 6, '0', STR_PAD_LEFT)) ?></td>
                 <td>
-                  <?php if ($order['user_name']): ?>
-                    <i class="bi bi-person-circle"></i> <?= e($order['user_name']) ?>
-                  <?php else: ?>
-                    <?= e($order['customer_name'] ?? 'N/A') ?>
-                  <?php endif; ?>
+                  <div class="d-flex align-items-start flex-column">
+                    <span class="fw-medium small">
+                      <?php if ($order['user_name']): ?>
+                        <i class="bi bi-person-circle"></i> <?= e($order['user_name']) ?>
+                      <?php else: ?>
+                        <?= e($order['customer_name'] ?? 'N/A') ?>
+                      <?php endif; ?>
+                    </span>
+                    <!-- Hiển thị Email/SĐT trên mobile -->
+                    <div class="d-lg-none mt-1">
+                      <small class="text-muted d-block" style="font-size: 0.75rem; line-height: 1.3;">
+                        <?php if ($order['user_email']): ?>
+                          <?= e($order['user_email']) ?>
+                        <?php endif; ?>
+                        <?php if (!empty($order['customer_phone'])): ?>
+                          <br><?= e($order['customer_phone']) ?>
+                        <?php endif; ?>
+                      </small>
+                    </div>
+                    <!-- Hiển thị tổng tiền trên mobile cực nhỏ -->
+                    <div class="d-sm-none mt-1">
+                      <small class="text-danger fw-bold" style="font-size: 0.8rem;"><?= format_vnd($order['total_amount']) ?></small>
+                    </div>
+                  </div>
                 </td>
-                <td>
+                <td class="d-none d-lg-table-cell">
                   <small>
                     <?php if ($order['user_email']): ?>
                       <?= e($order['user_email']) ?><br>
@@ -68,20 +87,25 @@
                     <?php endif; ?>
                   </small>
                 </td>
-                <td class="fw-bold text-danger"><?= format_vnd($order['total_amount']) ?></td>
+                <td class="fw-bold text-danger d-none d-sm-table-cell"><?= format_vnd($order['total_amount']) ?></td>
                 <td>
                   <?php
                   $class = $statusClass[$order['status']] ?? 'secondary';
                   $text = $statusText[$order['status']] ?? ucfirst($order['status']);
                   ?>
-                  <span class="badge bg-<?= $class ?>"><?= $text ?></span>
+                  <span class="badge bg-<?= $class ?> small"><?= $text ?></span>
+                  <!-- Hiển thị ngày trên mobile -->
+                  <div class="d-md-none mt-1">
+                    <small class="text-muted d-block" style="font-size: 0.7rem;"><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></small>
+                  </div>
                 </td>
-                <td><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
+                <td class="d-none d-md-table-cell"><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></td>
+                <td class="pe-2 pe-md-3 text-center">
+                  <div class="d-flex flex-column flex-xl-row gap-1 justify-content-center">
                     <a href="/admin/orders/detail?id=<?= $order['id'] ?>"
-                       class="btn btn-outline-primary" title="Xem chi tiết">
-                      <i class="bi bi-eye"></i>
+                       class="btn btn-outline-primary btn-sm" title="Xem chi tiết"
+                       style="font-size: 0.7rem; padding: 0.2rem 0.35rem;">
+                      <i class="bi bi-eye" style="font-size: 0.85rem;"></i><span class="d-none d-xl-inline ms-1">Xem</span>
                     </a>
 
                     <!-- Button mở modal cập nhật trạng thái - Ẩn nếu đã hoàn thành/hủy -->
@@ -89,12 +113,14 @@
                       <button type="button" class="btn btn-outline-secondary btn-sm"
                               data-bs-toggle="modal"
                               data-bs-target="#statusModal<?= $order['id'] ?>"
-                              title="Cập nhật trạng thái">
-                        <i class="bi bi-pencil"></i>
+                              title="Cập nhật trạng thái"
+                              style="font-size: 0.7rem; padding: 0.2rem 0.35rem;">
+                        <i class="bi bi-pencil" style="font-size: 0.85rem;"></i><span class="d-none d-xl-inline ms-1">Sửa</span>
                       </button>
                     <?php else: ?>
-                      <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Đơn hàng đã hoàn thành/hủy">
-                        <i class="bi bi-lock"></i>
+                      <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Đơn hàng đã hoàn thành/hủy"
+                              style="font-size: 0.7rem; padding: 0.2rem 0.35rem;">
+                        <i class="bi bi-lock" style="font-size: 0.85rem;"></i>
                       </button>
                     <?php endif; ?>
                   </div>
@@ -168,41 +194,41 @@
 
     <!-- Statistics -->
     <div class="row mt-4">
-      <div class="col-md-3 mb-3">
+      <div class="col-6 col-lg-3 mb-3">
         <div class="card text-center border-warning h-100">
-          <div class="card-body">
-            <h6 class="text-muted">Chờ xử lý</h6>
-            <h3 class="text-warning">
+          <div class="card-body p-2 p-md-3">
+            <h6 class="text-muted small mb-1">Chờ xử lý</h6>
+            <h3 class="text-warning mb-0">
               <?= count(array_filter($orders, fn($o) => in_array($o['status'], ['pending']))) ?>
             </h3>
           </div>
         </div>
       </div>
-      <div class="col-md-3 mb-3">
+      <div class="col-6 col-lg-3 mb-3">
         <div class="card text-center border-primary h-100">
-          <div class="card-body">
-            <h6 class="text-muted">Đang xử lý</h6>
-            <h3 class="text-primary">
+          <div class="card-body p-2 p-md-3">
+            <h6 class="text-muted small mb-1">Đang xử lý</h6>
+            <h3 class="text-primary mb-0">
               <?= count(array_filter($orders, fn($o) => in_array($o['status'], ['confirmed', 'processing', 'shipping']))) ?>
             </h3>
           </div>
         </div>
       </div>
-      <div class="col-md-3 mb-3">
+      <div class="col-6 col-lg-3 mb-3">
         <div class="card text-center border-success h-100">
-          <div class="card-body">
-            <h6 class="text-muted">Hoàn thành</h6>
-            <h3 class="text-success">
+          <div class="card-body p-2 p-md-3">
+            <h6 class="text-muted small mb-1">Hoàn thành</h6>
+            <h3 class="text-success mb-0">
               <?= count(array_filter($orders, fn($o) => $o['status'] === 'completed')) ?>
             </h3>
           </div>
         </div>
       </div>
-      <div class="col-md-3 mb-3">
+      <div class="col-6 col-lg-3 mb-3">
         <div class="card text-center border-danger h-100">
-          <div class="card-body">
-            <h6 class="text-muted">Tổng doanh thu</h6>
-            <h3 class="text-danger">
+          <div class="card-body p-2 p-md-3">
+            <h6 class="text-muted small mb-1">Doanh thu</h6>
+            <h3 class="text-danger mb-0 fs-5 fs-lg-3">
               <?= format_vnd(array_sum(array_column($orders, 'total_amount'))) ?>
             </h3>
           </div>

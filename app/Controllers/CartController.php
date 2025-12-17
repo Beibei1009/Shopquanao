@@ -17,6 +17,7 @@ class CartController
         $invalidItems = [];
 
         if (!empty($sessionCart)) {
+            $pdo = \Database::getInstance();
             //Lặp qua tất cả các sản phẩm trong giỏ hàng ($sessionCart).
             //Mỗi sản phẩm có khóa ($cartKey) và giá trị ($item) là thông tin của sản phẩm.
             foreach ($sessionCart as $cartKey => $item) {
@@ -29,7 +30,7 @@ class CartController
                 // Lấy thông tin chi tiết của sản phẩm từ cơ sở dữ liệu database
                 $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ? AND is_active = TRUE");
                 $stmt->execute([$productId]);
-                $product = $stmt->fetch(PDO::FETCH_ASSOC);
+                $product = $stmt->fetch(\PDO::FETCH_ASSOC);
 
                 if ($product) {
                     // Không cần check tồn kho - mặc định luôn còn hàng
@@ -82,12 +83,12 @@ class CartController
             exit;
         }
 
-        require __DIR__ . '/../../config/database.php';
+        $pdo = \Database::getInstance();
 
         // Kiểm tra sản phẩm có tồn tại và đang active không
         $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ? AND is_active = TRUE");
         $stmt->execute([$id]);
-        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+        $product = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         //không tìm thấy sản phẩm → lỗi.
         if (!$product) {
@@ -170,7 +171,6 @@ class CartController
                 $quantity = (int)($_POST['quantity'] ?? 1);
                 // Kiểm tra dữ liệu hợp lệ : cart key tồn tại và số lượng > 0
                 if ($cartKey && isset($_SESSION['cart'][$cartKey]) && $quantity > 0) {
-                    require_once __DIR__ . '/../../config/database.php';
                     $pdo = \Database::getInstance();
 
                     // Lấy item trong giỏ theo key.
@@ -181,7 +181,7 @@ class CartController
                     // Lấy lại giá sản phẩm từ bảng products
                     $stmt = $pdo->prepare("SELECT price FROM products WHERE id = ? AND is_active = TRUE");
                     $stmt->execute([$productId]);
-                    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $product = $stmt->fetch(\PDO::FETCH_ASSOC);
                     // Nếu sản phẩm tồn tại
                     if ($product) {
                         // Không cần check tồn kho - cho phép cập nhật số lượng tự do
@@ -220,7 +220,7 @@ class CartController
 
             echo json_encode(['success' => false, 'error' => 'Invalid request']);
             exit;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo json_encode([
                 'success' => false,
                 'error' => $e->getMessage()
@@ -292,8 +292,7 @@ class CartController
             exit;
         }
 
-        require_once __DIR__ . '/../../config/database.php';
-        $pdo = Database::getInstance();
+        $pdo = \Database::getInstance();
 
         try {
             //Mở  transaction tất cả insert/update hoặc sẽ thành công hết
@@ -316,7 +315,7 @@ class CartController
                 // Lấy dữ liệu mới nhất của sản phẩm từ DB (tránh đổi giá, đổi tồn kho mà giỏ chưa update.)
                 $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ? AND is_active = TRUE");
                 $stmt->execute([$productId]);
-                $product = $stmt->fetch(PDO::FETCH_ASSOC);
+                $product = $stmt->fetch(\PDO::FETCH_ASSOC);
                 // Nếu sản phẩm không tồn tại nữa
                 if (!$product) {
                     // Thêm vào danh sách xóa thay vì vứt lỗi ngay
@@ -396,7 +395,7 @@ class CartController
                 $shippingFee,
                 $totalAmount
             ]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
             $orderId = $result['id'];
 
             // Thêm order items
@@ -433,7 +432,7 @@ class CartController
 
             // Nếu có lỗi xảy ra trong quá trình xử lý - Rollback toàn bộ transaction
             // thông báo lỗi và chuyển về trang giỏ hàng
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $pdo->rollBack();
             $_SESSION['flash_error'] = 'Lỗi thanh toán: ' . $e->getMessage();
             header('Location: /cart');

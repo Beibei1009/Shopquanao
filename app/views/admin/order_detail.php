@@ -1,40 +1,40 @@
 <?php ob_start(); ?>
 
 <div class="container my-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-danger">
-      <i class="bi bi-receipt"></i> Chi tiết đơn hàng #<?= e($order['order_code'] ?? $order['id']) ?>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+    <h2 class="text-danger mb-0 fs-4 fs-md-2">
+      <i class="bi bi-receipt"></i> <span class="d-none d-sm-inline">Chi tiết đơn hàng</span> #<?= e($order['order_code'] ?? $order['id']) ?>
     </h2>
-    <a href="/admin/orders" class="btn btn-outline-secondary">
-      <i class="bi bi-arrow-left"></i> Quay lại danh sách
+    <a href="/admin/orders" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-left"></i> <span class="d-none d-sm-inline">Quay lại danh sách</span><span class="d-inline d-sm-none">Quay lại</span>
     </a>
   </div>
 
   <div class="row">
     <!-- Thông tin đơn hàng -->
-    <div class="col-md-8">
+    <div class="col-lg-8 order-2 order-lg-1">
       <div class="card shadow-sm mb-4">
         <div class="card-header bg-danger text-white">
-          <h5 class="mb-0"><i class="bi bi-box-seam"></i> Sản phẩm trong đơn hàng</h5>
+          <h5 class="mb-0 fs-6 fs-md-5"><i class="bi bi-box-seam"></i> Sản phẩm trong đơn hàng</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0 p-md-3">
           <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="table table-hover align-middle mb-0">
               <thead class="table-light">
                 <tr>
-                  <th style="width: 80px;">Ảnh</th>
-                  <th>Sản phẩm</th>
-                  <th class="text-center">Size</th>
-                  <th class="text-center">Màu</th>
-                  <th class="text-end">Đơn giá</th>
-                  <th class="text-center">SL</th>
-                  <th class="text-end">Thành tiền</th>
+                  <th style="width: 80px;" class="d-none d-md-table-cell">Ảnh</th>
+                  <th style="min-width: 140px;" class="ps-2 ps-md-3">Sản phẩm</th>
+                  <th class="text-center d-none d-sm-table-cell">Size</th>
+                  <th class="text-center d-none d-lg-table-cell">Màu</th>
+                  <th class="text-end d-none d-md-table-cell">Đơn giá</th>
+                  <th class="text-center" style="min-width: 40px;">SL</th>
+                  <th class="text-end pe-2 pe-md-3" style="min-width: 90px;">Tổng</th>
                 </tr>
               </thead>
               <tbody>
                 <?php foreach ($orderItems as $item): ?>
                 <tr>
-                  <td>
+                  <td class="d-none d-md-table-cell">
                     <?php if (!empty($item['product_image'])): ?>
                       <img src="/uploads/<?= e($item['product_image']) ?>"
                            class="img-thumbnail"
@@ -47,42 +47,60 @@
                       </div>
                     <?php endif; ?>
                   </td>
-                  <td>
-                    <strong><?= e($item['product_name']) ?></strong>
-                    <?php if (!empty($item['product_sku'])): ?>
-                      <br><small class="text-muted">SKU: <?= e($item['product_sku']) ?></small>
-                    <?php endif; ?>
+                  <td class="ps-2 ps-md-3">
+                    <div class="d-flex align-items-start flex-column">
+                      <strong class="small"><?= e($item['product_name']) ?></strong>
+                      <?php if (!empty($item['product_sku'])): ?>
+                        <small class="text-muted" style="font-size: 0.7rem;">SKU: <?= e($item['product_sku']) ?></small>
+                      <?php endif; ?>
+                      <!-- Hiển thị thông tin size, màu trên mobile -->
+                      <div class="d-sm-none mt-1">
+                        <small class="text-muted" style="font-size: 0.7rem; line-height: 1.3;">
+                          <?php if (!empty($item['size'])): ?>Size: <?= e($item['size']) ?><?php endif; ?>
+                          <?= (!empty($item['size']) && !empty($item['color'])) ? ' | ' : '' ?>
+                          <?php if (!empty($item['color'])): ?>Màu: <?= e($item['color']) ?><?php endif; ?>
+                        </small>
+                      </div>
+                      <!-- Hiển thị đơn giá trên mobile -->
+                      <div class="d-md-none mt-1">
+                        <small class="text-muted" style="font-size: 0.75rem;">Giá: <?= format_vnd($item['product_price']) ?></small>
+                      </div>
+                    </div>
                   </td>
-                  <td class="text-center">
-                    <?= !empty($item['size']) ? e($item['size']) : '-' ?>
+                  <td class="text-center d-none d-sm-table-cell">
+                    <small><?= !empty($item['size']) ? e($item['size']) : '-' ?></small>
                   </td>
-                  <td class="text-center">
-                    <?= !empty($item['color']) ? e($item['color']) : '-' ?>
+                  <td class="text-center d-none d-lg-table-cell">
+                    <small><?= !empty($item['color']) ? e($item['color']) : '-' ?></small>
                   </td>
-                  <td class="text-end"><?= format_vnd($item['product_price']) ?></td>
-                  <td class="text-center"><strong><?= e($item['quantity']) ?></strong></td>
-                  <td class="text-end text-danger fw-bold"><?= format_vnd($item['subtotal']) ?></td>
+                  <td class="text-end d-none d-md-table-cell"><small><?= format_vnd($item['product_price']) ?></small></td>
+                  <td class="text-center"><strong class="small">x<?= e($item['quantity']) ?></strong></td>
+                  <td class="text-end text-danger fw-bold pe-2 pe-md-3"><small><?= format_vnd($item['subtotal']) ?></small></td>
                 </tr>
                 <?php endforeach; ?>
               </tbody>
               <tfoot class="table-light">
                 <tr>
-                  <td colspan="6" class="text-end"><strong>Tạm tính:</strong></td>
-                  <td class="text-end"><?= format_vnd($order['subtotal']) ?></td>
+                  <td colspan="2" class="d-md-none text-end pe-2"><small><strong>Tạm tính:</strong></small></td>
+                  <td colspan="6" class="d-none d-md-table-cell text-end"><strong>Tạm tính:</strong></td>
+                  <td class="text-end pe-2 pe-md-3"><?= format_vnd($order['subtotal']) ?></td>
                 </tr>
                 <tr>
-                  <td colspan="6" class="text-end"><strong>Phí vận chuyển:</strong></td>
-                  <td class="text-end"><?= format_vnd($order['shipping_fee']) ?></td>
+                  <td colspan="2" class="d-md-none text-end pe-2"><small><strong>Phí ship:</strong></small></td>
+                  <td colspan="6" class="d-none d-md-table-cell text-end"><strong>Phí vận chuyển:</strong></td>
+                  <td class="text-end pe-2 pe-md-3"><?= format_vnd($order['shipping_fee']) ?></td>
                 </tr>
                 <?php if (!empty($order['discount_amount']) && $order['discount_amount'] > 0): ?>
                 <tr>
-                  <td colspan="6" class="text-end"><strong>Giảm giá:</strong></td>
-                  <td class="text-end text-success">-<?= format_vnd($order['discount_amount']) ?></td>
+                  <td colspan="2" class="d-md-none text-end pe-2"><small><strong>Giảm giá:</strong></small></td>
+                  <td colspan="6" class="d-none d-md-table-cell text-end"><strong>Giảm giá:</strong></td>
+                  <td class="text-end text-success pe-2 pe-md-3">-<?= format_vnd($order['discount_amount']) ?></td>
                 </tr>
                 <?php endif; ?>
                 <tr class="table-danger">
-                  <td colspan="6" class="text-end"><strong>Tổng cộng:</strong></td>
-                  <td class="text-end fw-bold fs-5"><?= format_vnd($order['total_amount']) ?></td>
+                  <td colspan="2" class="d-md-none text-end pe-2"><strong class="small">Tổng:</strong></td>
+                  <td colspan="6" class="d-none d-md-table-cell text-end"><strong>Tổng cộng:</strong></td>
+                  <td class="text-end fw-bold pe-2 pe-md-3" style="font-size: 1.1rem;"><?= format_vnd($order['total_amount']) ?></td>
                 </tr>
               </tfoot>
             </table>
@@ -92,13 +110,13 @@
     </div>
 
     <!-- Thông tin khách hàng và trạng thái -->
-    <div class="col-md-4">
+    <div class="col-lg-4 order-1 order-lg-2">
       <!-- Trạng thái đơn hàng -->
       <div class="card shadow-sm mb-3">
         <div class="card-header bg-danger text-white">
-          <h6 class="mb-0"><i class="bi bi-info-circle"></i> Trạng thái</h6>
+          <h6 class="mb-0 small"><i class="bi bi-info-circle"></i> Trạng thái</h6>
         </div>
-        <div class="card-body">
+        <div class="card-body p-2 p-md-3">
           <?php
           $statusClass = [
             'pending' => 'warning',
@@ -120,29 +138,30 @@
           $text = $statusText[$order['status']] ?? ucfirst($order['status']);
           ?>
           <p class="mb-2">
-            <strong>Trạng thái:</strong><br>
-            <span class="badge bg-<?= $class ?> fs-6"><?= $text ?></span>
+            <strong class="small">Trạng thái:</strong><br>
+            <span class="badge bg-<?= $class ?> small mt-1"><?= $text ?></span>
           </p>
           <p class="mb-2">
-            <strong>Thanh toán:</strong><br>
-            <?= $order['payment_method'] === 'cod' ? 'COD (Tiền mặt)' : e($order['payment_method']) ?>
+            <strong class="small">Thanh toán:</strong><br>
+            <small><?= $order['payment_method'] === 'cod' ? 'COD (Tiền mặt)' : e($order['payment_method']) ?></small>
           </p>
           <p class="mb-0">
-            <strong>Ngày đặt:</strong><br>
-            <?= date('d/m/Y H:i', strtotime($order['created_at'])) ?>
+            <strong class="small">Ngày đặt:</strong><br>
+            <small><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></small>
           </p>
           <?php if (!empty($order['confirmed_at'])): ?>
           <p class="mb-0 mt-2">
-            <strong>Ngày xác nhận:</strong><br>
-            <?= date('d/m/Y H:i', strtotime($order['confirmed_at'])) ?>
+            <strong class="small">Ngày xác nhận:</strong><br>
+            <small><?= date('d/m/Y H:i', strtotime($order['confirmed_at'])) ?></small>
           </p>
           <?php endif; ?>
 
           <?php if (!in_array($order['status'], ['completed', 'cancelled'])): ?>
-          <hr>
+          <hr class="my-2">
           <button type="button" class="btn btn-sm btn-outline-primary w-100"
                   data-bs-toggle="modal"
-                  data-bs-target="#statusModal">
+                  data-bs-target="#statusModal"
+                  style="font-size: 0.85rem;">
             <i class="bi bi-pencil"></i> Cập nhật trạng thái
           </button>
           <?php endif; ?>
@@ -152,30 +171,30 @@
       <!-- Thông tin khách hàng -->
       <div class="card shadow-sm mb-3">
         <div class="card-header bg-danger text-white">
-          <h6 class="mb-0"><i class="bi bi-person"></i> Khách hàng</h6>
+          <h6 class="mb-0 small"><i class="bi bi-person"></i> Khách hàng</h6>
         </div>
-        <div class="card-body">
+        <div class="card-body p-2 p-md-3">
           <p class="mb-2">
-            <strong>Tên:</strong><br>
-            <?= e($order['customer_name']) ?>
+            <strong class="small">Tên:</strong><br>
+            <small><?= e($order['customer_name']) ?></small>
           </p>
           <p class="mb-2">
-            <strong>Email:</strong><br>
-            <?= e($order['customer_email']) ?>
+            <strong class="small">Email:</strong><br>
+            <small class="text-break"><?= e($order['customer_email']) ?></small>
           </p>
           <p class="mb-2">
-            <strong>SĐT:</strong><br>
-            <?= e($order['customer_phone']) ?>
+            <strong class="small">SĐT:</strong><br>
+            <small><?= e($order['customer_phone']) ?></small>
           </p>
           <p class="mb-0">
-            <strong>Địa chỉ:</strong><br>
-            <?= nl2br(e($order['customer_address'])) ?>
+            <strong class="small">Địa chỉ:</strong><br>
+            <small><?= nl2br(e($order['customer_address'])) ?></small>
           </p>
           <?php if (!empty($order['customer_note'])): ?>
-          <hr>
+          <hr class="my-2">
           <p class="mb-0">
-            <strong>Ghi chú:</strong><br>
-            <em><?= nl2br(e($order['customer_note'])) ?></em>
+            <strong class="small">Ghi chú:</strong><br>
+            <small><em><?= nl2br(e($order['customer_note'])) ?></em></small>
           </p>
           <?php endif; ?>
         </div>
@@ -185,19 +204,19 @@
       <?php if (!empty($order['admin_note']) || !empty($order['cancelled_reason'])): ?>
       <div class="card shadow-sm">
         <div class="card-header bg-warning">
-          <h6 class="mb-0"><i class="bi bi-sticky"></i> Ghi chú Admin</h6>
+          <h6 class="mb-0 small"><i class="bi bi-sticky"></i> Ghi chú Admin</h6>
         </div>
-        <div class="card-body">
+        <div class="card-body p-2 p-md-3">
           <?php if (!empty($order['admin_note'])): ?>
           <p class="mb-2">
-            <strong>Ghi chú:</strong><br>
-            <?= nl2br(e($order['admin_note'])) ?>
+            <strong class="small">Ghi chú:</strong><br>
+            <small><?= nl2br(e($order['admin_note'])) ?></small>
           </p>
           <?php endif; ?>
           <?php if (!empty($order['cancelled_reason'])): ?>
           <p class="mb-0">
-            <strong>Lý do hủy:</strong><br>
-            <span class="text-danger"><?= nl2br(e($order['cancelled_reason'])) ?></span>
+            <strong class="small">Lý do hủy:</strong><br>
+            <small class="text-danger"><?= nl2br(e($order['cancelled_reason'])) ?></small>
           </p>
           <?php endif; ?>
         </div>

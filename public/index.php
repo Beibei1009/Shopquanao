@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Composer Autoloader - tự động load tất cả class theo PSR-4
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -30,6 +31,16 @@ switch ($path) {
         (new AuthController())->logout();
         break;
 
+    case 'auth/google':
+        $controller = new \App\Controllers\GoogleController();
+        $controller->redirectToGoogle();
+        break;
+
+    case 'auth/google/callback':
+        $controller = new \App\Controllers\GoogleController();
+        $controller->callback();
+        break;
+
     // 🏠 Trang chủ
     case '':
         (new HomeController())->index();
@@ -48,7 +59,7 @@ switch ($path) {
         }
         break;
 
-    
+
     // ℹ️ Giới thiệu
     case 'about':
         (new AboutController())->index();

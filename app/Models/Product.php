@@ -22,7 +22,7 @@ class Product {
     // Lấy sản phẩm mới nhất
     public function latest($limit = 8): mixed {
         $stmt = $this->pdo->prepare("SELECT * FROM products WHERE (is_active = TRUE OR is_active IS NULL) ORDER BY id DESC LIMIT ?");
-        $stmt->bindValue(1, $limit, PDO::PARAM_INT);
+        $stmt->bindValue(1, $limit, \PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
     }
